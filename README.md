@@ -19,4 +19,3 @@ export PICTURE_UPLOAD_SERVICE_URL=https://picture-upload-service-luu7kai33a-uc.a
 ```
 Run ```./setup.sh``` script located in the root of the project to deploy all components or run ```./setup.sh``` located in each service folder to deploy that component only.
 
-![Alt text](./cymbal-eats-services.svg)
