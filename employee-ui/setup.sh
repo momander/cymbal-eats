@@ -74,12 +74,12 @@ quasar clean
 quasar build
 
 docker build -f Dockerfile \
-  --tag gcr.io/$PROJECT_NAME/$PICTURE_UPLOAD_SERVICE_NAME dist
+  --tag gcr.io/$PROJECT_NAME/$EMPLOYEE_SERVICE_NAME dist
 
-docker push gcr.io/$PROJECT_NAME/$PICTURE_UPLOAD_SERVICE_NAME
+docker push gcr.io/$PROJECT_NAME/$EMPLOYEE_SERVICE_NAME
 
-gcloud run deploy $PICTURE_UPLOAD_SERVICE_NAME \
-  --image=gcr.io/$PROJECT_NAME/$PICTURE_UPLOAD_SERVICE_NAME:latest \
+gcloud run deploy $EMPLOYEE_SERVICE_NAME \
+  --image=gcr.io/$PROJECT_NAME/$EMPLOYEE_SERVICE_NAME:latest \
   --port=80 \
   --region=$REGION \
   --allow-unauthenticated \
