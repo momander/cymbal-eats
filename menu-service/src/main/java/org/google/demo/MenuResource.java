@@ -22,13 +22,18 @@ import io.quarkus.panache.common.Sort;
 @Produces(MediaType.APPLICATION_JSON)
 public class MenuResource {
 
-    private Long id;
 
     @GET
     public List<Menu> getAll() throws Exception {
 
         return Menu.findAll(Sort.ascending("item_name")).list();
         
+    }
+
+    @GET
+    @Path("{id}")
+    public Menu get(@PathParam("id") Long id) throws Exception {
+        return Menu.findById(id);
     }
 
     @GET
