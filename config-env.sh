@@ -53,8 +53,8 @@ gcloud services enable \
     --quiet
 
 export REGION=us-east4
-export WORKFLOW_LOCATION=$REGION
-export TRIGGER_LOCATION=$REGION
+export WORKFLOW_LOCATION=us-east1
+export TRIGGER_LOCATION=us-east1
 
 gcloud config set run/region $REGION
 
