@@ -52,7 +52,7 @@ gcloud services enable \
     eventarc.googleapis.com \
     --quiet
 
-export REGION=us-central1
+export REGION=us-east1
 export WORKFLOW_LOCATION=$REGION
 export TRIGGER_LOCATION=$REGION
 
