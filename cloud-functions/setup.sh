@@ -36,6 +36,16 @@ gsutil mb -p $PROJECT_ID -l $REGION $BUCKET_THUMBNAILS
 
 gsutil iam ch allUsers:objectViewer $BUCKET_THUMBNAILS
 
+gcloud iam service-accounts create cymbal-eats-cf-sa
+
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+  --member="serviceAccount:cymbal-eats-cf-sa@$PROJECT_ID.iam.gserviceaccount.com" \
+  --role="roles/storage.objectViewer"
+
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+  --member="serviceAccount:cymbal-eats-cf-sa@$PROJECT_ID.iam.gserviceaccount.com" \
+  --role="roles/storage.objectCreator"
+
 gcloud functions deploy process_thumbnails \
   --region=$REGION \
   --trigger-resource=$UPLOAD_BUCKET \
@@ -44,6 +54,7 @@ gcloud functions deploy process_thumbnails \
   --set-env-vars=BUCKET_THUMBNAILS=$BUCKET_THUMBNAILS,MENU_SERVICE_URL=$MENU_SERVICE_URL \
   --source=thumbnail \
   --project=$PROJECT_ID \
+  --service-account=cymbal-eats-cf-sa@$PROJECT_ID.iam.gserviceaccount.com \
   --quiet
 
 gcloud projects add-iam-policy-binding $PROJECT_ID \
