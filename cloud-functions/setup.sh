@@ -56,7 +56,3 @@ gcloud functions deploy process_thumbnails \
   --project=$PROJECT_ID \
   --service-account=cymbal-eats-cf-sa@$PROJECT_ID.iam.gserviceaccount.com \
   --quiet
-
-gcloud projects add-iam-policy-binding $PROJECT_ID \
-  --member="serviceAccount:$PROJECT_ID@appspot.gserviceaccount.com" \
-  --role="roles/storage.objectCreator"
