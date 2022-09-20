@@ -92,6 +92,7 @@
   import * as Server from '../utils/Server.js';
   import statesFile from '../assets/us-states.json';
   import Toolbar from '../components/Toolbar.vue';
+  import firebase from "firebase/app";
 
   const store = useStore();
   const router = useRouter();
