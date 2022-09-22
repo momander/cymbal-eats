@@ -37,6 +37,7 @@ steps:
     - -c
     - |
       export REGION=${_REGION}
+      export _REGION=${_REGION}
       export _APP_NAME=${_APP_NAME}
       export _SPANNER_INSTANCE_NAME=${_SPANNER_INSTANCE_NAME}
       echo "PROJECT_ID = ${PROJECT_ID}"
