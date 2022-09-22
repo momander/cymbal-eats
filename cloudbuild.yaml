@@ -19,9 +19,10 @@ steps:
     args:
     - -c
     - |
-      gcloud projects add-iam-policy-binding ${PROJECT_ID} \
-        --member=serviceAccount:${PROJECT_NUMBER}@cloudbuild.gserviceaccount.com \
-        --role=roles/browser
+# Need to be run by project owner before starting deployment
+#      gcloud projects add-iam-policy-binding ${PROJECT_ID} \
+#        --member=serviceAccount:${PROJECT_NUMBER}@cloudbuild.gserviceaccount.com \
+#        --role=roles/browser
       gcloud projects add-iam-policy-binding ${PROJECT_ID} \
         --member=serviceAccount:${PROJECT_NUMBER}@cloudbuild.gserviceaccount.com \
         --role=roles/spanner.admin
