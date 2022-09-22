@@ -95,7 +95,7 @@ func enableCors(w *http.ResponseWriter) {
 
 func handler(w http.ResponseWriter, r *http.Request) {
 	enableCors(&w)
-	fmt.Fprintf(w, "v1. GoLang Inventory Service is running!")
+	fmt.Fprintf(w, "GoLang Inventory Service is running!")
 }
 
 func getAvailableInventory(w http.ResponseWriter, r *http.Request) {
