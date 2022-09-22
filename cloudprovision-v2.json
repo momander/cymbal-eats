@@ -1,16 +1,4 @@
 {
-      "name": "gcr.io/google.com/cloudsdktool/cloud-sdk:slim",
-      "args": ["gcloud", "beta", "builds", "triggers", "create", "github",
-               "--name=${_APP_NAME}-trigger",
-               "--repo-name=cymbal-eats",
-               "--repo-owner=gitrey",
-               "--branch-pattern=main",
-               "--build-config=./cloudbuild.yaml",
-               "--substitutions=_APP_NAME=${_APP_NAME}"
-              ]
-}
-
-{
   "cloudbuild": {
     "name": "gcr.io/google.com/cloudsdktool/cloud-sdk:slim",
       "args": ["gcloud", "beta", "builds", "triggers", "create", "github",
