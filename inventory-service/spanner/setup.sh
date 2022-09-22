@@ -24,6 +24,9 @@ if [[ "${_SPANNER_INSTANCE_NAME}" ]]; then
   export DB_INSTANCE=${_SPANNER_INSTANCE_NAME}
 fi
 
+if [[ "${_REGION}" ]]; then
+  export REGION=${_REGION}
+fi
 export DB_NAME=menu-inventory
 
 gcloud services enable \
