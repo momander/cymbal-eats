@@ -1,0 +1,48 @@
+{
+      "name": "gcr.io/google.com/cloudsdktool/cloud-sdk:slim",
+      "args": ["gcloud", "beta", "builds", "triggers", "create", "github",
+               "--name=${_APP_NAME}-trigger",
+               "--repo-name=cymbal-eats",
+               "--repo-owner=gitrey",
+               "--branch-pattern=main",
+               "--build-config=./cloudbuild.yaml",
+               "--substitutions=_APP_NAME=${_APP_NAME}"
+              ]
+}
+
+{
+  "cloudbuild": {
+    "name": "gcr.io/google.com/cloudsdktool/cloud-sdk:slim",
+      "args": ["gcloud", "beta", "builds", "triggers", "create", "github",
+               "--name=${_APP_NAME}-trigger",
+               "--repo-name=cymbal-eats",
+               "--repo-owner=gitrey",
+               "--branch-pattern=main",
+               "--build-config=./cloudbuild.yaml",
+               "--substitutions=_APP_NAME=${_APP_NAME},_REGION=${_REGION}"
+              ]
+  },
+  "params": [
+    {
+      "param": "_APP_NAME",
+      "label": "Application Name",
+      "description": "Application that will be deployed.",
+      "type": "string",
+      "required": true
+    },
+    {
+      "param": "_REGION",
+      "label": "Application Region",
+      "description": "Where do you want to deploy the application?",
+      "type": "string",
+      "required": true
+    }
+  ],
+  "roles": [
+    "roles/run.invoker"
+  ],
+  "apis": [
+    "run.googleapis.com",
+    "artifactregistry.googleapis.com"
+  ]
+}
