@@ -19,6 +19,11 @@ source ../../config-env.sh
 export BASE_DIR=$PWD
 
 export DB_INSTANCE=menu-inventory
+
+if [[ -z "${_SPANNER_INSTANCE_NAME}" ]]; then
+  export DB_INSTANCE=${_SPANNER_INSTANCE_NAME}
+fi
+
 export DB_NAME=menu-inventory
 
 gcloud services enable \
@@ -41,6 +46,11 @@ export DB_CONNECTION_STRING=projects/$PROJECT_ID/instances/$DB_INSTANCE/database
 gcloud projects add-iam-policy-binding $PROJECT_ID \
 --member="serviceAccount:$PROJECT_NUMBER-compute@developer.gserviceaccount.com" \
 --role="roles/spanner.databaseAdmin"
+
+
+if [[ -z "${_APP_NAME}" ]]; then
+  export INVENTORY_SERVICE_NAME=${_APP_NAME}
+fi
 
 gcloud run deploy $INVENTORY_SERVICE_NAME \
     --source . \
