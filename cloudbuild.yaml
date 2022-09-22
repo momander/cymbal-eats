@@ -13,14 +13,31 @@
 # limitations under the License.
 
 steps:
-  - id: Get Private Artifactory Address
+  - id: Configure Deployment, Setup Roles, Create Required Resources
     name: gcr.io/cloud-builders/gcloud
     entrypoint: /bin/bash
-    args: 
-      - -c
-      - |
-        export REGION=${_REGION}
-        echo "PROJECT_ID = ${PROJECT_ID}"
-        echo "Cymbal Eats will be deployed in ${_REGION}"
-        cd inventory-service/spanner
-        ./setup.sh
+    args:
+    - -c
+    - |
+      gcloud projects add-iam-policy-binding ${PROJECT_ID} \
+        --member=serviceAccount:${PROJECT_NUMBER}@cloudbuild.gserviceaccount.com \
+        --role=roles/spanner.admin
+      gcloud projects add-iam-policy-binding ${PROJECT_ID} \
+        --member=serviceAccount:${PROJECT_NUMBER}@cloudbuild.gserviceaccount.com \
+        --role=roles/run.admin
+      gcloud projects add-iam-policy-binding ${PROJECT_ID} \
+        --member=serviceAccount:${PROJECT_NUMBER}@cloudbuild.gserviceaccount.com \
+        --role=roles/artifactregistry.admin
+
+# roles/compute.instanceAdmin.v1
+  - id: Deploy Inventory Service
+    name: gcr.io/cloud-builders/gcloud
+    entrypoint: /bin/bash
+    args:
+    - -c
+    - |
+      export REGION=${_REGION}
+      echo "PROJECT_ID = ${PROJECT_ID}"
+      echo "Cymbal Eats will be deployed in ${_REGION}"
+      cd inventory-service/spanner
+      ./setup.sh
