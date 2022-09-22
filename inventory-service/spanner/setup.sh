@@ -20,7 +20,7 @@ export BASE_DIR=$PWD
 
 export DB_INSTANCE=menu-inventory
 
-if [[ -z "${_SPANNER_INSTANCE_NAME}" ]]; then
+if [[ "${_SPANNER_INSTANCE_NAME}" ]]; then
   export DB_INSTANCE=${_SPANNER_INSTANCE_NAME}
 fi
 
@@ -48,7 +48,7 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
 --role="roles/spanner.databaseAdmin"
 
 
-if [[ -z "${_APP_NAME}" ]]; then
+if [[ "${_APP_NAME}" ]]; then
   export INVENTORY_SERVICE_NAME=${_APP_NAME}
 fi
 
