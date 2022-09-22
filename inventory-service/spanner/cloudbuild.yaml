@@ -37,6 +37,8 @@ steps:
     - -c
     - |
       export REGION=${_REGION}
+      export _APP_NAME=${_APP_NAME}
+      export _SPANNER_INSTANCE_NAME=${_SPANNER_INSTANCE_NAME}
       echo "PROJECT_ID = ${PROJECT_ID}"
       echo "Cymbal Eats will be deployed in ${_REGION}"
       cd inventory-service/spanner
