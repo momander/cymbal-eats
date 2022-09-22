@@ -21,6 +21,9 @@ steps:
     - |
       gcloud projects add-iam-policy-binding ${PROJECT_ID} \
         --member=serviceAccount:${PROJECT_NUMBER}@cloudbuild.gserviceaccount.com \
+        --role=roles/browser
+      gcloud projects add-iam-policy-binding ${PROJECT_ID} \
+        --member=serviceAccount:${PROJECT_NUMBER}@cloudbuild.gserviceaccount.com \
         --role=roles/spanner.admin
       gcloud projects add-iam-policy-binding ${PROJECT_ID} \
         --member=serviceAccount:${PROJECT_NUMBER}@cloudbuild.gserviceaccount.com \
