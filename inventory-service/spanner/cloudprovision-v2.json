@@ -41,7 +41,7 @@
       "required": true
     },
     {
-      "param": "_TARGET_GIT_REPO",
+      "param": "_TARGET_GIT_TOKEN",
       "label": "GitHub Personal Access Token",
       "description": "GitHub Personal Access Token",
       "type": "string",
