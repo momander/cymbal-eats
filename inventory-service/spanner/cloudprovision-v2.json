@@ -32,7 +32,22 @@
       "description": "Spanner Instance Name",
       "type": "string",
       "required": true
+    },
+    {
+      "param": "_TARGET_GIT_REPO",
+      "label": "Target Git Repo",
+      "description": "Target Git Repo",
+      "type": "string",
+      "required": true
+    },
+    {
+      "param": "_TARGET_GIT_REPO",
+      "label": "GitHub Personal Access Token",
+      "description": "GitHub Personal Access Token",
+      "type": "string",
+      "required": true
     }
+
   ],
   "roles": [
     "roles/run.invoker"
