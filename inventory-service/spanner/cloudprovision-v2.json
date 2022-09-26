@@ -39,15 +39,7 @@
       "description": "Target Git Repo",
       "type": "string",
       "required": true
-    },
-    {
-      "param": "_TARGET_GIT_TOKEN",
-      "label": "GitHub Personal Access Token",
-      "description": "GitHub Personal Access Token",
-      "type": "string",
-      "required": true
     }
-
   ],
   "roles": [
     "roles/run.invoker"
