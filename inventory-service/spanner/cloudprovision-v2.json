@@ -8,7 +8,7 @@
                "--branch-pattern=main",
                "--included-files=inventory-service/spanner/**",
                "--build-config=./inventory-service/spanner/cloudbuild.yaml",
-               "--substitutions=_APP_NAME=${_APP_NAME},_REGION=${_REGION},_SPANNER_INSTANCE_NAME=${_SPANNER_INSTANCE_NAME}"
+               "--substitutions=_APP_NAME=${_APP_NAME},_REGION=${_REGION},_SPANNER_INSTANCE_NAME=${_SPANNER_INSTANCE_NAME},_INSTANCE_GIT_REPO=${_INSTANCE_GIT_REPO}"
               ]
   },
   "params": [
