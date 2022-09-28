@@ -40,12 +40,5 @@
       "type": "string",
       "required": true
     }
-  ],
-  "roles": [
-    "roles/run.invoker"
-  ],
-  "apis": [
-    "run.googleapis.com",
-    "artifactregistry.googleapis.com"
   ]
 }
