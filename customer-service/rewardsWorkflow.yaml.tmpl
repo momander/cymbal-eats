@@ -6,24 +6,31 @@ main:
           - base64: ${base64.decode(event.data.message.data)}
           - order: ${json.decode(text.decode(base64))}
     - check_if_customer_exists:
-        call: http.post
-        args:
-          url: CUSTOMER_SERVICE_URL/customer/exists
-          auth:
-            type: OIDC
-          body:
-            email: ${order.email}
-        result: customerResponse
+        try:
+          call: http.get
+          args:
+            url: ${"CUSTOMER_SERVICE_URL/customer/" + string(order.userid)}
+            auth:
+              type: OIDC
+          result: customerResponse
+        except:
+             as: e
+             steps:
+               - known_errors:
+                   switch:
+                     - condition: ${e.code == 404}
+                       next: create_customer
+                     - condition: ${e.code == 403}
+                       return: "Authentication error"
+               - unhandled_exception:
+                   raise: ${e}
     - set_existing_customer:
         assign:
             - customerRecord: ${customerResponse.body}
-    - create_or_update:
+    - update_existing_customer:
         switch:
-          - condition: ${not("id" in customerRecord)}
-            next: create_customer
           - condition: ${"id" in customerRecord}
             next: init_total_amount
-        next: end
     - create_customer:
         call: http.post
         args:
@@ -31,6 +38,7 @@ main:
           auth:
             type: OIDC
           body:
+            id: ${order.userid}
             name: ${order.name}
             email: ${order.email}
             address: ${order.address}
