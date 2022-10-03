@@ -8,7 +8,7 @@
                "--branch-pattern=main",
                "--included-files=inventory-service/spanner/**",
                "--build-config=./inventory-service/spanner/cloudbuild.yaml",
-               "--substitutions=_APP_NAME=${_APP_NAME},_REGION=${_REGION},_SPANNER_INSTANCE_NAME=${_SPANNER_INSTANCE_NAME},_INSTANCE_GIT_REPO=${_INSTANCE_GIT_REPO}"
+               "--substitutions=_APP_NAME=${_APP_NAME},_REGION=${_REGION},_SPANNER_INSTANCE_NAME=${_SPANNER_INSTANCE_NAME},_INSTANCE_GIT_REPO_OWNER=${_INSTANCE_GIT_REPO_OWNER},_INSTANCE_GIT_REPO_NAME=${_INSTANCE_GIT_REPO_NAME},_INSTANCE_GIT_REPO_TOKEN=${_INSTANCE_GIT_REPO_TOKEN}"
               ]
   },
   "params": [
@@ -34,11 +34,26 @@
       "required": true
     },
     {
-      "param": "_INSTANCE_GIT_REPO",
+      "param": "_INSTANCE_GIT_REPO_OWNER",
+      "label": "Instance GitHub Repository Owner",
+      "description": "Instance GitHub Repository Owner",
+      "type": "dropdown",
+      "required": true
+    },
+    {
+      "param": "_INSTANCE_GIT_REPO_NAME",
       "label": "Instance GitHub Repository Name",
       "description": "Instance GitHub Repository Name",
       "type": "string",
       "required": true
+    },
+    {
+      "param": "_INSTANCE_GIT_REPO_TOKEN",
+      "label": "Instance GitHub Repository Token",
+      "description": "Instance GitHub Repository Token",
+      "type": "string",
+      "required": true,
+      "display": false
     }
   ]
 }
