@@ -32,8 +32,12 @@ public class CustomerResource {
 
     @GET
     @Path("{id}")
-    public Customer get(@PathParam("id") String id) throws Exception {
-        return Customer.findById(id);
+    public Response get(@PathParam("id") String id) throws Exception {
+        Customer customer = Customer.findById(id);
+        if (customer != null)
+            return Response.ok(customer).status(200).build();
+
+        return Response.status(404).build();
     }
 
     @POST
