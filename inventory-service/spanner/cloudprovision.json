@@ -1,15 +1,25 @@
 {
   "cloudbuild": {
-    "name": "gcr.io/google.com/cloudsdktool/cloud-sdk:slim",
-      "args": ["gcloud", "beta", "builds", "triggers", "create", "github",
-               "--name=${_APP_NAME}-trigger",
-               "--repo-name=cymbal-eats",
-               "--repo-owner=gitrey",
-               "--branch-pattern=main",
-               "--included-files=inventory-service/spanner/**",
-               "--build-config=./inventory-service/spanner/cloudbuild.yaml",
-               "--substitutions=_APP_NAME=${_APP_NAME},_REGION=${_REGION},_SPANNER_INSTANCE_NAME=${_SPANNER_INSTANCE_NAME},_INSTANCE_GIT_REPO_OWNER=${_INSTANCE_GIT_REPO_OWNER},_INSTANCE_GIT_REPO_NAME=${_INSTANCE_GIT_REPO_NAME},_INSTANCE_GIT_REPO_TOKEN=${_INSTANCE_GIT_REPO_TOKEN}"
-              ]
+    "steps": [
+      {
+        "name": "gcr.io/google.com/cloudsdktool/cloud-sdk:slim",
+        "args": [
+          "gcloud",
+          "beta",
+          "builds",
+          "triggers",
+          "create",
+          "github",
+          "--name=${_APP_NAME}-trigger",
+          "--repo-name=cymbal-eats",
+          "--repo-owner=gitrey",
+          "--branch-pattern=main",
+          "--included-files=inventory-service/spanner/**",
+          "--build-config=./inventory-service/spanner/cloudbuild.yaml",
+          "--substitutions=_APP_NAME=${_APP_NAME},_REGION=${_REGION},_SPANNER_INSTANCE_NAME=${_SPANNER_INSTANCE_NAME},_INSTANCE_GIT_REPO_OWNER=${_INSTANCE_GIT_REPO_OWNER},_INSTANCE_GIT_REPO_NAME=${_INSTANCE_GIT_REPO_NAME},_INSTANCE_GIT_REPO_TOKEN=${_INSTANCE_GIT_REPO_TOKEN}"
+        ]
+      }
+    ]
   },
   "params": [
     {
