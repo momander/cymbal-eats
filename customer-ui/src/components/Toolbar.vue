@@ -37,7 +37,7 @@
 <script setup>
 
   import { useRouter } from 'vue-router';
-  import * as Firestore from '../utils/Firestore.js';
+  import * as Firebase from '../utils/Firebase.js';
 
   const router = useRouter();
 
@@ -46,7 +46,7 @@
   }
 
   function logIn() {
-    Firestore.logIn();
+    Firebase.logIn();
   }
 
 </script>
