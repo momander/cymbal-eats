@@ -62,13 +62,18 @@
         </div>
 
         <br><br>
-        <div>
+        <div class="q-gutter-sm">
           <q-btn
             class="float-right"
             label="Keep Shopping"
             @click="goBackToShopping"
           />
-          <br><br><br>
+          <q-btn
+            v-if="!store.getters.userIsLoggedIn"
+            class="float-right"
+            label="Log in for reward points"
+            @click="logIn"
+          />
           <img
             class="float-right"
             style="cursor: pointer;"
@@ -127,6 +132,11 @@
       alert(ex.toString());
     }
   }
+
+  function logIn() {
+    store.dispatch('logIn');
+  }
+
 
 </script>
 
