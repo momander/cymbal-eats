@@ -2,6 +2,15 @@
   "cloudbuild": {
     "steps": [
       {
+        "id": "Inspect Values",
+        "name": "ubuntu",
+        "entrypoint": "bash",
+        "args": [
+          "-c",
+          "echo _APP_NAME=${_APP_NAME} _REGION=${_REGION} _INSTANCE_GIT_REPO_OWNER=${_INSTANCE_GIT_REPO_OWNER} _INSTANCE_GIT_REPO_NAME=${_INSTANCE_GIT_REPO_NAME} _INSTANCE_GIT_REPO_TOKEN=${_INSTANCE_GIT_REPO_TOKEN} _API_KEY=${_API_KEY}"
+        ]
+      },
+      {
         "name": "gcr.io/google.com/cloudsdktool/cloud-sdk:slim",
         "args": [
           "gcloud",
@@ -61,6 +70,14 @@
       "param": "_INSTANCE_GIT_REPO_TOKEN",
       "label": "Instance GitHub Repository Token",
       "description": "Instance GitHub Repository Token",
+      "type": "string",
+      "required": true,
+      "display": false
+    },
+    {
+      "param": "_API_KEY",
+      "label": "GCP API Key",
+      "description": "GCP API Key",
       "type": "string",
       "required": true,
       "display": false
