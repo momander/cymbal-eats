@@ -12,13 +12,21 @@
     >
       <q-menu>
       <q-list style="min-width: 100px">
-        <q-item clickable v-close-popup @click="goHome()">
-        <q-item-section avatar>
-          <q-icon name="home" />
-        </q-item-section>
-        <q-item-section>
-          Home
-        </q-item-section>
+        <q-item clickable v-close-popup @click="goHome">
+          <q-item-section avatar>
+            <q-icon name="home" />
+          </q-item-section>
+          <q-item-section>
+            Home
+          </q-item-section>
+        </q-item>
+        <q-item clickable v-close-popup @click="logIn">
+          <q-item-section avatar>
+            <q-icon name="fas fa-user" />
+          </q-item-section>
+          <q-item-section>
+            Log in
+          </q-item-section>
         </q-item>
       </q-list>
       </q-menu>
@@ -29,11 +37,16 @@
 <script setup>
 
   import { useRouter } from 'vue-router';
+  import * as Firestore from '../utils/Firestore.js';
 
   const router = useRouter();
 
   function goHome() {
     router.push('/');
+  }
+
+  function logIn() {
+    Firestore.logIn();
   }
 
 </script>
