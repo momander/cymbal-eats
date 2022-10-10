@@ -1,15 +1,21 @@
 import { store } from 'quasar/wrappers';
 import { createStore } from 'vuex';
 import * as Server from '../utils/Server.js';
+import * as Firebase from '../utils/Firebase.js';
 
 export default store(function () {
   const Store = createStore({
     state: {
       menuItems: [],
       orderItems: [],
-      status : ''
+      status : '',
+      userName: '',
+      userPhotoUrl: ''
     },
     getters: {
+      userIsLoggedIn(state) {
+        return state.userName != '';
+      }
     },
     mutations: {
       setMenuItems(state, menuItems) {
@@ -38,6 +44,10 @@ export default store(function () {
         state.orderItems = orderItems.splice(0);
         state.status = status;
       },
+      setUser(state, {userName, userPhotoUrl}) {
+        state.userName = userName;
+        state.userPhotoUrl = userPhotoUrl;
+      }
     },
     actions: {
       async loadMenu(context) {
@@ -45,6 +55,24 @@ export default store(function () {
         context.commit('setMenuItems', menuItems);
         const inventoryCounts = await Server.getInventoryCounts();
         context.commit('setInventoryCounts', inventoryCounts);
+      },
+      async logIn(context) {
+        try {
+          const user = await Firebase.logIn();
+          context.commit('setUser', {userName: user.displayName, userPhotoUrl: user.photoURL});
+        }
+        catch (ex) {
+          console.log(ex)
+        }
+      },
+      async logOut(context) {
+        try {
+          Firebase.logOut();
+          context.commit('setUser', {userName: '', userPhotoUrl: ''});
+        }
+        catch (ex) {
+          console.log(ex)
+        }
       }
     },
     // enable strict mode (adds overhead!)
