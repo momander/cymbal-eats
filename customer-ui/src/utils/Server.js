@@ -24,13 +24,13 @@ export async function getInventoryCounts() {
   }));
 }
 
-export async function placeOrder(name, email, address, city, state, zip, orderItems) {
+export async function placeOrder(idToken, name, email, address, city, state, zip, orderItems) {
   const url = process.env.VUE_APP_ORDER_SERVICE_URL + "/order";
   const payload = {name, email, address, city, state, zip, orderItems};
   const response = await fetch(url, {
     method: 'POST',
     mode: 'cors',
-    headers: {'Content-Type': 'application/json'},
+    headers: {'Content-Type': 'application/json', 'Authorization': idToken},
     body: JSON.stringify(payload)
   });
   const respObj = await response.json();

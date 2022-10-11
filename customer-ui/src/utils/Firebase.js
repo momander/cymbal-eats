@@ -30,3 +30,7 @@ export async function logIn() {
 export async function logOut() {
   signOut(auth);
 }
+
+export async function getToken() {
+  return await auth.currentUser?.getIdToken(true);
+}

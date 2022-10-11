@@ -94,7 +94,6 @@
   import { useStore } from 'vuex';
   import { useRouter } from 'vue-router';
   import OrderView from '../components/OrderView.vue';
-  import * as Server from '../utils/Server.js';
   import statesFile from '../assets/us-states.json';
   import Toolbar from '../components/Toolbar.vue';
 
@@ -120,10 +119,14 @@
 
   async function placeOrder() {
     try {
-      const orderNumber = await Server.placeOrder(
-        name.value, email.value, address.value, city.value, state.value, zip.value,
-        store.state.orderItems
-      );
+      const orderNumber = await store.dispatch('placeOrder', {
+        name: name.value,
+        email: email.value,
+        address: address.value,
+        city: city.value,
+        state: state.value,
+        zip: zip.value
+      })
       if (!orderNumber) throw 'No order number returned from server';
       router.push('/order-status/' + orderNumber);
     }

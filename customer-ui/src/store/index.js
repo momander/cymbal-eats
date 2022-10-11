@@ -56,6 +56,13 @@ export default store(function () {
         const inventoryCounts = await Server.getInventoryCounts();
         context.commit('setInventoryCounts', inventoryCounts);
       },
+      async placeOrder(context, {name, email, address, city, state, zip}) {
+        const idToken = await Firebase.getToken();
+        const orderNumber = await Server.placeOrder(
+          idToken, name, email, address, city, state, zip, context.state.orderItems
+        );
+        return orderNumber;
+      },
       async logIn(context) {
         try {
           const user = await Firebase.logIn();
