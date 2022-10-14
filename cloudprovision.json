@@ -1,0 +1,86 @@
+{
+  "cloudbuild": {
+    "steps": [
+      {
+        "id": "Inspect Values",
+        "name": "ubuntu",
+        "entrypoint": "bash",
+        "args": [
+          "-c",
+          "echo _APP_NAME=${_APP_NAME} _REGION=${_REGION} _INSTANCE_GIT_REPO_OWNER=${_INSTANCE_GIT_REPO_OWNER} _INSTANCE_GIT_REPO_NAME=${_INSTANCE_GIT_REPO_NAME} _INSTANCE_GIT_REPO_TOKEN=${_INSTANCE_GIT_REPO_TOKEN} _API_KEY=${_API_KEY}"
+        ]
+      },
+      {
+        "name": "gcr.io/google.com/cloudsdktool/cloud-sdk:slim",
+        "args": [
+          "gcloud",
+          "beta",
+          "builds",
+          "triggers",
+          "create",
+          "github",
+          "--name=${_APP_NAME}-trigger",
+          "--repo-name=cymbal-eats",
+          "--repo-owner=gitrey",
+          "--branch-pattern=main",
+          "--included-files=inventory-service/spanner/**",
+          "--build-config=./inventory-service/spanner/cloudbuild.yaml",
+          "--substitutions=_APP_NAME=${_APP_NAME},_REGION=${_REGION},_SPANNER_INSTANCE_NAME=${_SPANNER_INSTANCE_NAME},_INSTANCE_GIT_REPO_OWNER=${_INSTANCE_GIT_REPO_OWNER},_INSTANCE_GIT_REPO_NAME=${_INSTANCE_GIT_REPO_NAME},_INSTANCE_GIT_REPO_TOKEN=${_INSTANCE_GIT_REPO_TOKEN}"
+        ]
+      }
+    ]
+  },
+  "params": [
+    {
+      "param": "_APP_NAME",
+      "label": "Application Name",
+      "description": "Application that will be deployed.",
+      "type": "string",
+      "required": true
+    },
+    {
+      "param": "_REGION",
+      "label": "Application Region",
+      "description": "Where do you want to deploy the application?",
+      "type": "string",
+      "required": true
+    },
+    {
+      "param": "_SPANNER_INSTANCE_NAME",
+      "label": "Spanner Instance Name",
+      "description": "Spanner Instance Name",
+      "type": "string",
+      "required": true
+    },
+    {
+      "param": "_INSTANCE_GIT_REPO_OWNER",
+      "label": "Instance GitHub Repository Owner",
+      "description": "Instance GitHub Repository Owner",
+      "type": "dropdown",
+      "required": true
+    },
+    {
+      "param": "_INSTANCE_GIT_REPO_NAME",
+      "label": "Instance GitHub Repository Name",
+      "description": "Instance GitHub Repository Name",
+      "type": "string",
+      "required": true
+    },
+    {
+      "param": "_INSTANCE_GIT_REPO_TOKEN",
+      "label": "Instance GitHub Repository Token",
+      "description": "Instance GitHub Repository Token",
+      "type": "string",
+      "required": true,
+      "display": false
+    },
+    {
+      "param": "_API_KEY",
+      "label": "GCP API Key",
+      "description": "GCP API Key",
+      "type": "string",
+      "required": true,
+      "display": false
+    }
+  ]
+}
