@@ -79,7 +79,7 @@ app.post('/order', async (req, res) => {
     const data = req.body;
 
     if (userId) {
-      data.userid = userId;
+      data.userId = userId;
     }
     console.log(data);
 
