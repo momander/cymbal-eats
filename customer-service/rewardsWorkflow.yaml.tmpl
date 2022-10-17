@@ -5,11 +5,16 @@ main:
         assign:
           - base64: ${base64.decode(event.data.message.data)}
           - order: ${json.decode(text.decode(base64))}
+    - is_customer_authenticated:
+        switch:
+              - condition: ${"userId" in order}
+                next: check_if_customer_exists
+        next: return_skipped_result
     - check_if_customer_exists:
         try:
           call: http.get
           args:
-            url: ${"CUSTOMER_SERVICE_URL/customer/" + string(order.userid)}
+            url: ${"CUSTOMER_SERVICE_URL/customer/" + string(order.userId)}
             auth:
               type: OIDC
           result: customerResponse
@@ -38,7 +43,7 @@ main:
           auth:
             type: OIDC
           body:
-            id: ${order.userid}
+            id: ${order.userId}
             name: ${order.name}
             email: ${order.email}
             address: ${order.address}
@@ -107,3 +112,6 @@ main:
           multiplier: ${multiplier}
           totalAmount: ${totalAmount}
           rewardPoints: ${rewardPoints}
+    - return_skipped_result:
+        return:
+          msg: "Reward Points are available for authenticated users only."
