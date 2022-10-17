@@ -5,6 +5,7 @@ main:
         assign:
           - base64: ${base64.decode(event.data.message.data)}
           - order: ${json.decode(text.decode(base64))}
+    // TODO skip processing if userid is null|empty
     - check_if_customer_exists:
         try:
           call: http.get
@@ -97,6 +98,7 @@ main:
             email: ${order.email}
             rewardPoints: ${rewardPoints}
         result: customerResponse
+    // TODO update orders table with reward points for particular order
     - log_rewards:
         call: sys.log
         args:
