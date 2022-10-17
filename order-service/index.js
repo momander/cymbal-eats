@@ -81,7 +81,6 @@ app.post('/order', async (req, res) => {
     if (userId) {
       data.userId = userId;
     }
-    console.log(data);
 
     publishMessage(data);
   } catch (ex) {
