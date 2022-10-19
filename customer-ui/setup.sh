@@ -18,6 +18,10 @@ source ../config-env.sh
 
 export BASE_DIR=$PWD
 
+firebase --non-interactive projects:addfirebase $PROJECT_ID
+
+firebase --non-interactive apps:create -P $PROJECT_ID WEB $CUSTOMER_SERVICE_NAME
+
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
 
 export NVM_DIR="/usr/local/nvm"
@@ -58,6 +62,9 @@ else
   echo "Using pre-defined MENU_SERVICE_URL=$MENU_SERVICE_URL"
 fi
 
+export API_KEY=$(firebase apps:sdkconfig --json | jq --raw-output ".result.sdkConfig.apiKey")
+export AUTH_DOMAIN=$(firebase apps:sdkconfig --json | jq --raw-output ".result.sdkConfig.authDomain")
+
 envsub .env.tmpl .env
 
 rm -rf cloud-run/public
@@ -75,5 +82,6 @@ gcloud run deploy $CUSTOMER_SERVICE_NAME \
   --region $REGION \
   --project=$PROJECT_ID \
   --allow-unauthenticated \
-  --set-env-vars=VUE_APP_PROJECT_ID=$PROJECT_ID,VUE_APP_MENU_SERVICE_URL=$MENU_SERVICE_URL,VUE_APP_INVENTORY_SERVICE_URL=$INVENTORY_SERVICE_URL,VUE_APP_ORDER_SERVICE_URL=$ORDER_SERVICE_URL \
+  --max-instances=2 \
+  --set-env-vars=VUE_APP_PROJECT_ID=$PROJECT_ID,VUE_APP_API_KEY=$API_KEY,VUE_APP_AUTH_DOMAIN=$AUTH_DOMAIN,VUE_APP_MENU_SERVICE_URL=$MENU_SERVICE_URL,VUE_APP_INVENTORY_SERVICE_URL=$INVENTORY_SERVICE_URL,VUE_APP_ORDER_SERVICE_URL=$ORDER_SERVICE_URL \
   --quiet

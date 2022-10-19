@@ -5,7 +5,7 @@ main:
         assign:
           - base64: ${base64.decode(event.data.message.data)}
           - order: ${json.decode(text.decode(base64))}
-    - is_customer_authenticated:
+    - is_user_authenticated:
         switch:
               - condition: ${"userId" in order}
                 next: check_if_customer_exists
@@ -50,7 +50,7 @@ main:
             city: ${order.city}
             state: ${order.state}
             zip: ${order.zip}
-            rewardPoints: 100
+            rewardPoints: 1
         result: customerResponse
     - set_new_customer:
         assign:
@@ -67,11 +67,6 @@ main:
                 - getStep:
                     assign:
                         - totalAmount: ${totalAmount + item.itemPrice}
-    - log_totalAmount:
-        call: sys.log
-        args:
-            text: ${"totalAmount = $" + string(totalAmount)}
-            severity: INFO
     - calculate_multiplier:
         switch:
           - condition: ${totalAmount < 10}
@@ -92,6 +87,7 @@ main:
     - calculate_rewards:
         assign:
             - rewardPoints: ${customerRecord.rewardPoints * multiplier}
+            - orderRewardPoints: ${rewardPoints - customerRecord.rewardPoints}
     - update_rewards:
         call: http.put
         args:
@@ -99,9 +95,28 @@ main:
           auth:
             type: OIDC
           body:
-            email: ${order.email}
             rewardPoints: ${rewardPoints}
         result: customerResponse
+    - update_order_rewards:
+        call: http.patch
+        args:
+          url: ${"ORDER_SERVICE_URL/order/" + string(order.orderNumber)}
+          auth:
+            type: OIDC
+          body:
+            rewardPoints: ${orderRewardPoints}
+            totalAmount: ${totalAmount}
+        result: orderPatchResponse
+    - log_totalAmount:
+        call: sys.log
+        args:
+            json:
+              orderNumber: ${order.orderNumber}
+              totalAmount: ${totalAmount}
+              multiplier: ${multiplier}
+              totalRewardPoints: ${rewardPoints}
+              orderRewardPoints: ${orderRewardPoints}
+            severity: INFO
     - log_rewards:
         call: sys.log
         args:
@@ -109,9 +124,11 @@ main:
             severity: INFO
     - return_result:
         return:
-          multiplier: ${multiplier}
+          orderNumber: ${order.orderNumber}
           totalAmount: ${totalAmount}
-          rewardPoints: ${rewardPoints}
+          multiplier: ${multiplier}
+          totalRewardPoints: ${rewardPoints}
+          orderRewardPoints: ${orderRewardPoints}
     - return_skipped_result:
         return:
-          msg: "Reward Points are available for authenticated users only."
+          msg: "Reward Points are available for logged in users only."
