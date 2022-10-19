@@ -38,6 +38,26 @@ app.get('/order', async (req, res) => {
   }
 })
 
+app.get('/order/customer', async (req, res) => {
+  try {
+    if (req.headers['authorization'] != null && req.headers['authorization']
+        != "undefined") {
+      const userId = await getUserIdFromAuthHeader(
+          req.headers['authorization']);
+      const orderColl = await db.collection(`orders`).where('userId', '==',
+          userId).get();
+      const orders = orderColl.docs.map(d => d.data());
+      res.json({status: 'success', data: orders});
+    } else {
+      console.error('Unauthorized');
+      res.status(401).json({error: 'Unauthorized'});
+    }
+  } catch (ex) {
+    console.error(ex);
+    res.status(500).json({error: ex.toString()});
+  }
+})
+
 app.get('/order/:orderNumber', async (req, res) => {
   try {
     const orderNumber = req.params.orderNumber;
@@ -73,6 +93,9 @@ app.post('/order', async (req, res) => {
       throw 'Incorrect Order Quantity or Item';
     }
 
+    if (userId) {
+      req.body.userId = userId;
+    }
     const orderNumber = await createOrderRecord(req.body);
     await subtractFromInventory(req.body.orderItems);
     res.json({orderNumber: orderNumber});
@@ -82,6 +105,7 @@ app.post('/order', async (req, res) => {
       data.userId = userId;
     }
 
+    data.orderNumber = orderNumber;
     publishMessage(data);
   } catch (ex) {
     console.error(ex);
@@ -133,6 +157,7 @@ async function createOrderRecord(requestBody) {
   const orderDoc = db.doc(`orders/${orderNumber}`);
   await orderDoc.set({
     orderNumber: orderNumber,
+    userId: requestBody.userId,
     name: requestBody.name,
     email: requestBody.email,
     address: requestBody.address,
