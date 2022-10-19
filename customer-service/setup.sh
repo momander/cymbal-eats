@@ -131,13 +131,20 @@ gcloud run deploy customer-service \
   --max-instances=3 \
   --quiet
 
-CUSTOMER_SERVICE_URL=$(gcloud run services describe customer-service \
+export CUSTOMER_SERVICE_URL=$(gcloud run services describe customer-service \
   --platform managed \
   --region $REGION \
   --format=json | jq \
   --raw-output ".status.url")
 
-sed "s@CUSTOMER_SERVICE_URL@$CUSTOMER_SERVICE_URL@g" rewardsWorkflow.yaml.tmpl > rewardsWorkflow.yaml
+export ORDER_SERVICE_URL=$(gcloud run services describe order-service \
+  --platform managed \
+  --region $REGION \
+  --format=json | jq \
+  --raw-output ".status.url")
+
+sed "s@CUSTOMER_SERVICE_URL@$CUSTOMER_SERVICE_URL@g" rewardsWorkflow.yaml.tmpl > rewardsWorkflow-1.yaml.tmpl
+sed "s@ORDER_SERVICE_URL@$ORDER_SERVICE_URL@g" rewardsWorkflow-1.yaml.tmpl > rewardsWorkflow.yaml
 
 gcloud config set workflows/location ${REGION}
 
