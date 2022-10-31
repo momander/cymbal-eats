@@ -15,6 +15,7 @@
     "@google-cloud/pubsub": "^2.19.4",
     "axios": "^0.26.1",
     "cors": "^2.8.5",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "firebase-admin": "^11.1.0"
   }
 }
