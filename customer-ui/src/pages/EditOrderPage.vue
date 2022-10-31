@@ -109,6 +109,9 @@
   const zip = ref('94043');
   const states = ref(statesFile);
 
+  // TODO: Create a new page that lists the user's orders.
+  //       Link to it from the hamburger menu.
+
   function goBackToShopping() {
     router.push('/');
   }
@@ -128,6 +131,7 @@
         zip: zip.value
       })
       if (!orderNumber) throw 'No order number returned from server';
+      // TODO: Clear the cart after an order has been placed.
       router.push('/order-status/' + orderNumber);
     }
     catch(ex) {

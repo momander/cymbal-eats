@@ -25,6 +25,8 @@ const inventoryServer = axios.create({
   }
 })
 
+// TODO: Add endpoint for getting a customer's orders.
+
 app.get('/order', async (req, res) => {
   try {
     const orderColl = await db.collection(`orders`).get();
@@ -59,6 +61,7 @@ app.post('/order', async (req, res) => {
     if (! await inventoryAvailable(req.body.orderItems)) {
       throw 'Incorrect Order Quantity or Item';
     }
+    // TODO: Add user id to orders in Firestore.
     const orderNumber = await createOrderRecord(req.body);
     await subtractFromInventory(req.body.orderItems);    
     res.json({orderNumber: orderNumber});

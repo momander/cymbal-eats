@@ -57,6 +57,7 @@ export default store(function () {
         context.commit('setInventoryCounts', inventoryCounts);
       },
       async placeOrder(context, {name, email, address, city, state, zip}) {
+        // TODO: Check if the user is logged in.
         const idToken = await Firebase.getToken();
         const orderNumber = await Server.placeOrder(
           idToken, name, email, address, city, state, zip, context.state.orderItems
