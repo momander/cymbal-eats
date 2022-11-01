@@ -100,7 +100,7 @@ gcloud pubsub subscriptions create order-points-push-sub \
     --message-retention-duration=1d \
     --enable-message-ordering \
     --max-delivery-attempts=5 \
-    --min-retry-delay=20m \
-    --max-retry-delay=2h \
+    --min-retry-delay=10m \
+    --max-retry-delay=1h \
     --dead-letter-topic=order-points-dead-letter-topic \
     --quiet
