@@ -73,6 +73,7 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
   --role="roles/datastore.user"
 
 gcloud pubsub topics create $TOPIC_ID --project=$PROJECT_ID
+gcloud pubsub topics create $ORDER_POINTS_TOPIC_ID --project=$PROJECT_ID
 
 gcloud projects add-iam-policy-binding $PROJECT_ID  \
   --member="serviceAccount:$PROJECT_NUMBER-compute@developer.gserviceaccount.com" \
@@ -84,5 +85,22 @@ gcloud run deploy $ORDER_SERVICE_NAME \
   --region $REGION \
   --allow-unauthenticated \
   --project=$PROJECT_ID \
+  --max-instances=3 \
   --set-env-vars=INVENTORY_SERVICE_URL=$INVENTORY_SERVICE_URL \
   --quiet
+
+export ORDER_SERVICE_URL=$(gcloud run services describe $ORDER_SERVICE_NAME \
+    --region=$REGION \
+    --format=json | jq \
+    --raw-output ".status.url")
+
+gcloud pubsub subscriptions create order-points-push-sub \
+    --topic=$ORDER_POINTS_TOPIC_ID \
+    --push-endpoint=$ORDER_SERVICE_URL/order/points \
+    --message-retention-duration=1d \
+    --enable-message-ordering \
+    --max-delivery-attempts=5 \
+    --min-retry-delay=20m \
+    --max-retry-delay=2h \
+    --dead-letter-topic=order-points-dead-letter-topic \
+    --quiet
