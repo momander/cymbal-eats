@@ -84,4 +84,5 @@ gcloud run deploy $EMPLOYEE_SERVICE_NAME \
   --allow-unauthenticated \
   --set-env-vars=UPLOAD_BUCKET=$UPLOAD_BUCKET \
   --project=$PROJECT_ID \
+  --max-instances=2 \
   --quiet

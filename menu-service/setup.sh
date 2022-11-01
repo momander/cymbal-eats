@@ -90,6 +90,7 @@ gcloud run deploy $MENU_SERVICE_NAME \
     --set-env-vars DB_HOST=$DB_INSTANCE_IP \
     --vpc-connector $VPC_CONNECTOR \
     --project=$PROJECT_ID \
+    --max-instances=3 \
     --quiet
 
 if [[ -z "${MENU_SERVICE_URL}" ]]; then
