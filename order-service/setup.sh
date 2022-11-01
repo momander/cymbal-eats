@@ -74,6 +74,7 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
 
 gcloud pubsub topics create $TOPIC_ID --project=$PROJECT_ID
 gcloud pubsub topics create $ORDER_POINTS_TOPIC_ID --project=$PROJECT_ID
+gcloud pubsub topics create order-points-dead-letter-topic --project=$PROJECT_ID
 
 gcloud projects add-iam-policy-binding $PROJECT_ID  \
   --member="serviceAccount:$PROJECT_NUMBER-compute@developer.gserviceaccount.com" \
