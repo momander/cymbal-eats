@@ -42,8 +42,7 @@ app.get('/order/customer', async (req, res) => {
   try {
     if (req.headers['authorization'] != null && req.headers['authorization']
         != "undefined") {
-      const userId = await getUserIdFromAuthHeader(
-          req.headers['authorization']);
+      var userId = await getUserIdFromAuthHeader(req.headers['authorization']);
       const orderColl = await db.collection(`orders`).where('userId', '==',
           userId).get();
       const orders = orderColl.docs.map(d => d.data());
@@ -106,6 +105,7 @@ app.post('/order', async (req, res) => {
     }
 
     data.orderNumber = orderNumber;
+
     publishMessage(data);
   } catch (ex) {
     console.error(ex);
@@ -186,16 +186,40 @@ function getNewOrderNumber() {
 }
 
 async function publishMessage(data) {
-  // Publishes the message as a string, e.g. "Hello, world!" or JSON.stringify(someObject)
-  const dataBuffer = Buffer.from(JSON.stringify(data))
-
   try {
+    const dataBuffer = Buffer.from(JSON.stringify(data))
     const messageId = await pubsub
         .topic(TOPIC_NAME)
         .publishMessage({data: dataBuffer});
     console.log(`Message ${messageId} published.`);
   } catch (error) {
     console.error(`Received error while publishing: ${error.message}`);
-    process.exitCode = 1;
   }
 }
+
+app.post('/order/points', async (req, res) => {
+
+  try {
+
+    const orderNumber = req.body.message.attributes.orderNumber;
+    const rewardPoints = parseInt(req.body.message.attributes.rewardPoints);
+    const totalAmount = parseFloat(
+        parseFloat(req.body.message.attributes.totalAmount).toFixed(2));
+
+    const updateRec = {
+      'rewardPoints': rewardPoints,
+      'totalAmount': totalAmount
+    };
+
+    const orderDoc = db.doc(`orders/${orderNumber}`);
+    if (orderDoc) {
+      await orderDoc.update(updateRec);
+      res.json({status: 'success'});
+    } else {
+      console.log("Order not found. orderNumber: ", orderNumber);
+    }
+  } catch (ex) {
+    console.error(ex);
+    res.status(500).json({error: ex.toString()});
+  }
+})
