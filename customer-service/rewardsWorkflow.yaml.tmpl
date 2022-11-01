@@ -97,16 +97,16 @@ main:
           body:
             rewardPoints: ${rewardPoints}
         result: customerResponse
-    - update_order_rewards:
-        call: http.patch
+    - publish_order_points:
+        call: googleapis.pubsub.v1.projects.topics.publish
         args:
-          url: ${"ORDER_SERVICE_URL/order/" + string(order.orderNumber)}
-          auth:
-            type: OIDC
+          topic: ${"projects/sys.get_env("GOOGLE_CLOUD_PROJECT_ID")/topics/order-points-topic"}
           body:
-            rewardPoints: ${orderRewardPoints}
-            totalAmount: ${totalAmount}
-        result: orderPatchResponse
+            messages:
+              - attributes:
+                  orderNumber: ${string(order.orderNumber)}
+                  rewardPoints: ${string(orderRewardPoints)}
+                  totalAmount: ${string(totalAmount)}
     - log_totalAmount:
         call: sys.log
         args:
