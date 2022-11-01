@@ -167,7 +167,10 @@ gcloud workflows deploy ${WORKFLOW_NAME} \
   --service-account=${WORKFLOW_SERVICE_ACCOUNT}@$PROJECT_ID.iam.gserviceaccount.com
 
 export TOPIC_ID=order-topic
+export ORDER_POINTS_TOPIC_ID=order-points-topic
+
 gcloud pubsub topics create $TOPIC_ID --project=$PROJECT_ID
+gcloud pubsub topics create $ORDER_POINTS_TOPIC_ID --project=$PROJECT_ID
 
 gcloud config set eventarc/location ${REGION}
 
@@ -178,6 +181,8 @@ gcloud iam service-accounts create ${TRIGGER_SERVICE_ACCOUNT}
 gcloud projects add-iam-policy-binding ${PROJECT_ID} \
   --member="serviceAccount:${TRIGGER_SERVICE_ACCOUNT}@${PROJECT_ID}.iam.gserviceaccount.com" \
   --role="roles/workflows.invoker"
+
+sleep 2m
 
 gcloud eventarc triggers create new-orders-trigger \
   --destination-workflow=${WORKFLOW_NAME} \
