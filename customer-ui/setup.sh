@@ -18,16 +18,20 @@ source ../config-env.sh
 
 export BASE_DIR=$PWD
 
+curl -sL https://firebase.tools | upgrade=true bash
+
+firebase login --no-localhost
+
 firebase --non-interactive projects:addfirebase $PROJECT_ID
 
 firebase --non-interactive apps:create -P $PROJECT_ID WEB $CUSTOMER_SERVICE_NAME
 
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh | bash
 
 export NVM_DIR="/usr/local/nvm"
 source $NVM_DIR/nvm.sh;
 
-nvm install 12.22.1
+nvm install 16.4.0
 npm install
 npm install -g @quasar/cli
 npm install -g envsub
