@@ -73,7 +73,7 @@ gcloud compute networks vpc-access connectors create ${VPC_CONNECTOR} \
     --region=${REGION} \
     --range=10.8.0.0/28
 
-./mvnw package -DskipTests
+./mvnw clean package -DskipTests
 
 docker build -f src/main/docker/Dockerfile.jvm \
     --tag gcr.io/$PROJECT_NAME/menu-service .
