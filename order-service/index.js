@@ -157,7 +157,7 @@ async function createOrderRecord(requestBody) {
   const orderDoc = db.doc(`orders/${orderNumber}`);
   await orderDoc.set({
     orderNumber: orderNumber,
-    userId: requestBody.userId,
+    userId: requestBody.userId ? requestBody.userId : '',
     name: requestBody.name,
     email: requestBody.email,
     address: requestBody.address,
