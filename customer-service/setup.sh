@@ -152,6 +152,9 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
   --member "serviceAccount:${WORKFLOW_SERVICE_ACCOUNT}@$PROJECT_ID.iam.gserviceaccount.com" \
   --role "roles/logging.logWriter"
 
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+  --member "serviceAccount:${WORKFLOW_SERVICE_ACCOUNT}@$PROJECT_ID.iam.gserviceaccount.com" \
+  --role "roles/pubsub.publisher"
 
 export WORKFLOW_NAME=rewardsWorkflow
 
