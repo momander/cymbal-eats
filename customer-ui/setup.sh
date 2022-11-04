@@ -99,5 +99,5 @@ printf "\nManual steps"
 echo "Enable Google sign-in in the Firebase console:"
 echo "https://console.firebase.google.com/u/0/project/$PROJECT_ID/authentication/providers"
 
-echo "Add Customer UI service domain to Authorized domains under Authentication/Settings:"
+printf "\nAdd Customer UI service domain to Authorized domains under Authentication/Settings:"
 echo "https://console.firebase.google.com/u/0/project/$PROJECT_ID/authentication/settings"
