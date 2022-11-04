@@ -93,3 +93,9 @@ gcloud run deploy $CUSTOMER_SERVICE_NAME \
   --max-instances=2 \
   --set-env-vars=VUE_APP_PROJECT_ID=$PROJECT_ID,VUE_APP_API_KEY=$API_KEY,VUE_APP_AUTH_DOMAIN=$AUTH_DOMAIN,VUE_APP_MENU_SERVICE_URL=$MENU_SERVICE_URL,VUE_APP_INVENTORY_SERVICE_URL=$INVENTORY_SERVICE_URL,VUE_APP_ORDER_SERVICE_URL=$ORDER_SERVICE_URL \
   --quiet
+
+echo "Enable Google sign-in in the Firebase console:"
+echo "https://console.firebase.google.com/u/0/project/$PROJECT_ID/authentication/providers"
+
+echo "Add Customer UI service domain to Authorized domains:"
+echo "https://console.firebase.google.com/u/0/project/$PROJECT_ID/authentication/settings"
