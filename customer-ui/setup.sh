@@ -24,7 +24,11 @@ firebase login --no-localhost
 
 firebase --non-interactive projects:addfirebase $PROJECT_ID
 
-firebase --non-interactive apps:create -P $PROJECT_ID WEB $CUSTOMER_SERVICE_NAME
+export APP_EXISTS=$(curl -H "Authorization: Bearer $(gcloud auth print-access-token)" https://firebase.googleapis.com/v1beta1/projects/$PROJECT_ID/webApps | grep -o -w $CUSTOMER_SERVICE_NAME | wc -w)
+
+if [ "$APP_EXISTS" -eq "0" ]; then
+  firebase --non-interactive apps:create -P $PROJECT_ID WEB $CUSTOMER_SERVICE_NAME
+fi
 
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh | bash
 
@@ -66,8 +70,8 @@ else
   echo "Using pre-defined MENU_SERVICE_URL=$MENU_SERVICE_URL"
 fi
 
-export API_KEY=$(firebase apps:sdkconfig --json | jq --raw-output ".result.sdkConfig.apiKey")
-export AUTH_DOMAIN=$(firebase apps:sdkconfig --json | jq --raw-output ".result.sdkConfig.authDomain")
+export API_KEY=$(firebase --non-interactive apps:sdkconfig -P $PROJECT_ID --json | jq --raw-output ".result.sdkConfig.apiKey")
+export AUTH_DOMAIN=$(firebase --non-interactive apps:sdkconfig -P $PROJECT_ID --json | jq --raw-output ".result.sdkConfig.authDomain")
 
 envsub .env.tmpl .env
 
