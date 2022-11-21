@@ -18,16 +18,24 @@ source ../config-env.sh
 
 export BASE_DIR=$PWD
 
+curl -sL https://firebase.tools | upgrade=true bash
+
+firebase login --no-localhost
+
 firebase --non-interactive projects:addfirebase $PROJECT_ID
 
-firebase --non-interactive apps:create -P $PROJECT_ID WEB $CUSTOMER_SERVICE_NAME
+export APP_EXISTS=$(curl -H "Authorization: Bearer $(gcloud auth print-access-token)" https://firebase.googleapis.com/v1beta1/projects/$PROJECT_ID/webApps | grep -o -w $CUSTOMER_SERVICE_NAME | wc -w)
 
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+if [ "$APP_EXISTS" -eq "0" ]; then
+  firebase --non-interactive apps:create -P $PROJECT_ID WEB $CUSTOMER_SERVICE_NAME
+fi
+
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh | bash
 
 export NVM_DIR="/usr/local/nvm"
 source $NVM_DIR/nvm.sh;
 
-nvm install 12.22.1
+nvm install 16.4.0
 npm install
 npm install -g @quasar/cli
 npm install -g envsub
@@ -62,8 +70,8 @@ else
   echo "Using pre-defined MENU_SERVICE_URL=$MENU_SERVICE_URL"
 fi
 
-export API_KEY=$(firebase apps:sdkconfig --json | jq --raw-output ".result.sdkConfig.apiKey")
-export AUTH_DOMAIN=$(firebase apps:sdkconfig --json | jq --raw-output ".result.sdkConfig.authDomain")
+export API_KEY=$(firebase --non-interactive apps:sdkconfig -P $PROJECT_ID --json | jq --raw-output ".result.sdkConfig.apiKey")
+export AUTH_DOMAIN=$(firebase --non-interactive apps:sdkconfig -P $PROJECT_ID --json | jq --raw-output ".result.sdkConfig.authDomain")
 
 envsub .env.tmpl .env
 
@@ -85,3 +93,11 @@ gcloud run deploy $CUSTOMER_SERVICE_NAME \
   --max-instances=2 \
   --set-env-vars=VUE_APP_PROJECT_ID=$PROJECT_ID,VUE_APP_API_KEY=$API_KEY,VUE_APP_AUTH_DOMAIN=$AUTH_DOMAIN,VUE_APP_MENU_SERVICE_URL=$MENU_SERVICE_URL,VUE_APP_INVENTORY_SERVICE_URL=$INVENTORY_SERVICE_URL,VUE_APP_ORDER_SERVICE_URL=$ORDER_SERVICE_URL \
   --quiet
+
+printf "\nManual steps"
+
+echo "Enable Google sign-in in the Firebase console:"
+echo "https://console.firebase.google.com/u/0/project/$PROJECT_ID/authentication/providers"
+
+printf "\nAdd Customer UI service domain to Authorized domains under Authentication/Settings:"
+echo "https://console.firebase.google.com/u/0/project/$PROJECT_ID/authentication/settings"
