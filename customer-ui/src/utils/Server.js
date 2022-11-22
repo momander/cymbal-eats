@@ -37,3 +37,17 @@ export async function placeOrder(idToken, name, email, address, city, state, zip
   if (respObj.error) throw respObj.error;
   return respObj.orderNumber;
 }
+
+export async function getOrders(idToken) {
+  console.time('getOrders');
+  const url = process.env.VUE_APP_ORDER_SERVICE_URL+"/order/customer";
+  const response = await fetch(url, {
+    method: 'GET',
+    mode: 'cors',
+    headers: {'Content-Type': 'application/json', 'Authorization': idToken},
+  })
+  const respObj = await response.json();
+  console.log('respObj', respObj)
+  console.timeEnd('getOrders')
+  return respObj.data;
+}

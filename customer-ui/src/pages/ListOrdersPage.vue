@@ -1,0 +1,50 @@
+<template>
+  <q-layout view="hhh lpr fff">
+    <q-header elevated>
+      <Toolbar/>
+    </q-header>
+
+    <q-page-container>
+
+      <div class="q-gutter-md q-pa-md">
+        <q-markup-table>
+          <thead>
+            <tr>
+              <th class="text-left">Header</th>
+              <th class="text-left">Header</th>
+              <th class="text-left">Header</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="order in store.state.orders" :key="order.id">
+              <td>
+                {{ order.id }}
+              </td>
+              <td>
+                {{ order.id }}
+              </td>
+              <td>
+                {{ order.id }}
+              </td>
+            </tr>
+          </tbody>
+        </q-markup-table>
+      </div>
+
+    </q-page-container>
+  </q-layout>
+</template>
+
+<script setup>
+
+  import { ref, onMounted } from 'vue';
+  import { useStore } from 'vuex';
+  import Toolbar from '../components/Toolbar.vue';
+
+  const store = useStore();
+
+  onMounted(async () => {
+    store.dispatch('loadOrders');
+  })
+
+</script>

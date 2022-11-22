@@ -12,6 +12,10 @@ const routes = [
     component: () => import('pages/EditOrderPage.vue')
   },
   {
+    path: '/orders',
+    component: () => import('pages/ListOrdersPage.vue')
+  },
+  {
     path: '/order-status/:orderNumber',
     component: () => import('pages/OrderStatusPage.vue')
   },

@@ -10,7 +10,8 @@ export default store(function () {
       orderItems: [],
       status : '',
       userName: '',
-      userPhotoUrl: ''
+      userPhotoUrl: '',
+      orders: []
     },
     getters: {
       userIsLoggedIn(state) {
@@ -47,6 +48,9 @@ export default store(function () {
       setUser(state, {userName, userPhotoUrl}) {
         state.userName = userName;
         state.userPhotoUrl = userPhotoUrl;
+      },
+      setOrders(state, orders) {
+        state.orders = orders;
       }
     },
     actions: {
@@ -81,6 +85,12 @@ export default store(function () {
         catch (ex) {
           console.log(ex)
         }
+      },
+      async loadOrders(context) {
+        const token = await Firebase.getToken();
+        const orders = await Server.getOrders(token);
+        console.log('orders', orders);
+        context.commit('setOrders', orders);
       }
     },
     // enable strict mode (adds overhead!)
