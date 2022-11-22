@@ -12,7 +12,7 @@
             <tr>
               <th class="text-left">Order number</th>
               <th class="text-left">Order amount</th>
-              <th class="text-left">Rewards points</th>
+              <th class="text-left">Reward points</th>
             </tr>
           </thead>
           <tbody>
