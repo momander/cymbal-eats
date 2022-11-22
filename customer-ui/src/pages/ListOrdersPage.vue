@@ -12,7 +12,7 @@
             <tr>
               <th class="text-left">Order number</th>
               <th class="text-left">Order amount</th>
-              <th class="text-left">Rewards earned</th>
+              <th class="text-left">Rewards points</th>
             </tr>
           </thead>
           <tbody>
@@ -21,7 +21,7 @@
                 {{ order.orderNumber }}
               </td>
               <td>
-                {{ order.totalAmount }}
+                {{ makeDollarAmount(order.totalAmount) }}
               </td>
               <td>
                 {{ order.rewardPoints }}
@@ -46,5 +46,9 @@
   onMounted(async () => {
     store.dispatch('loadOrders');
   })
+
+  function makeDollarAmount(amount) {
+    if (amount) return '$ ' + amount.toFixed(2);
+  }
 
 </script>
