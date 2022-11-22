@@ -12,8 +12,8 @@ const routes = [
     component: () => import('pages/EditOrderPage.vue')
   },
   {
-    path: '/orders',
-    component: () => import('pages/ListOrdersPage.vue')
+    path: '/rewards',
+    component: () => import('pages/RewardsPage.vue')
   },
   {
     path: '/order-status/:orderNumber',

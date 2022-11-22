@@ -37,7 +37,7 @@
 
 <script setup>
 
-  import { ref, onMounted } from 'vue';
+  import { computed, onMounted } from 'vue';
   import { useStore } from 'vuex';
   import Toolbar from '../components/Toolbar.vue';
 
@@ -48,7 +48,7 @@
   })
 
   function makeDollarAmount(amount) {
-    if (amount) return '$ ' + amount.toFixed(2);
+    if (amount) return '$' + amount.toFixed(2);
   }
 
 </script>

@@ -48,13 +48,13 @@
         <q-item
           v-if="store.getters.userIsLoggedIn"
           clickable
-          @click="goToOrdersPage"
+          @click="goToRewardsPage"
         >
           <q-item-section avatar>
             <q-icon name="fas fa-list" />
           </q-item-section>
           <q-item-section>
-            Orders
+            Rewards
           </q-item-section>
         </q-item>
 
@@ -88,8 +88,8 @@
     router.push('/');
   }
 
-  function goToOrdersPage() {
-    router.push('/orders');
+  function goToRewardsPage() {
+    router.push('/rewards');
   }
 
   function logIn() {
