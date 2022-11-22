@@ -44,6 +44,20 @@
             Log in
           </q-item-section>
         </q-item>
+
+        <q-item
+          v-if="store.getters.userIsLoggedIn"
+          clickable
+          @click="goToOrdersPage"
+        >
+          <q-item-section avatar>
+            <q-icon name="fas fa-list" />
+          </q-item-section>
+          <q-item-section>
+            Orders
+          </q-item-section>
+        </q-item>
+
         <q-item
           v-if="store.getters.userIsLoggedIn"
           clickable
@@ -72,6 +86,10 @@
 
   function goHome() {
     router.push('/');
+  }
+
+  function goToOrdersPage() {
+    router.push('/orders');
   }
 
   function logIn() {

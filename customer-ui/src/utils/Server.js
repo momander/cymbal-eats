@@ -47,7 +47,6 @@ export async function getOrders(idToken) {
     headers: {'Content-Type': 'application/json', 'Authorization': idToken},
   })
   const respObj = await response.json();
-  console.log('respObj', respObj)
   console.timeEnd('getOrders')
   return respObj.data;
 }

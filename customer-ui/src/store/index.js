@@ -89,7 +89,6 @@ export default store(function () {
       async loadOrders(context) {
         const token = await Firebase.getToken();
         const orders = await Server.getOrders(token);
-        console.log('orders', orders);
         context.commit('setOrders', orders);
       }
     },
