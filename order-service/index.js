@@ -38,7 +38,7 @@ app.get('/order', async (req, res) => {
   }
 })
 
-app.get('/order/customer', async (req, res) => {
+app.get('/orders/customer', async (req, res) => {
   try {
     if (req.headers['authorization'] != null && req.headers['authorization']
         != "undefined") {

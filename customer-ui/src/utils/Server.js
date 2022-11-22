@@ -40,7 +40,7 @@ export async function placeOrder(idToken, name, email, address, city, state, zip
 
 export async function getOrders(idToken) {
   console.time('getOrders');
-  const url = process.env.VUE_APP_ORDER_SERVICE_URL+"/order/customer";
+  const url = process.env.VUE_APP_ORDER_SERVICE_URL+"/orders/customer";
   const response = await fetch(url, {
     method: 'GET',
     mode: 'cors',

@@ -10,21 +10,21 @@
         <q-markup-table>
           <thead>
             <tr>
-              <th class="text-left">Header</th>
-              <th class="text-left">Header</th>
-              <th class="text-left">Header</th>
+              <th class="text-left">Order number</th>
+              <th class="text-left">Order amount</th>
+              <th class="text-left">Rewards earned</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="order in store.state.orders" :key="order.id">
               <td>
-                {{ order.id }}
+                {{ order.orderNumber }}
               </td>
               <td>
-                {{ order.id }}
+                {{ order.totalAmount }}
               </td>
               <td>
-                {{ order.id }}
+                {{ order.rewardPoints }}
               </td>
             </tr>
           </tbody>
