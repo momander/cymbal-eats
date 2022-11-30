@@ -105,3 +105,5 @@ gcloud pubsub subscriptions create order-points-push-sub \
     --max-retry-delay=10m \
     --dead-letter-topic=order-points-dead-letter-topic \
     --quiet
+
+firebase deploy
