@@ -71,7 +71,7 @@ gsutil mb -p $PROJECT_ID -l $REGION $UPLOAD_BUCKET
 gsutil iam ch allUsers:objectViewer $UPLOAD_BUCKET
 
 # This is to allow for Eventarc permissions to propagate
-sleep 3m
+sleep 5m
 
 gcloud functions deploy process-thumbnails \
   --gen2 \
@@ -85,4 +85,3 @@ gcloud functions deploy process-thumbnails \
   --set-env-vars=BUCKET_THUMBNAILS=$BUCKET_THUMBNAILS,MENU_SERVICE_URL=$MENU_SERVICE_URL \
   --max-instances=1 \
   --quiet
-
