@@ -22,6 +22,7 @@ gcloud services enable \
     alloydb.googleapis.com \
     artifactregistry.googleapis.com \
     cloudbuild.googleapis.com \
+    container.googleapis.com \
     run.googleapis.com \
     pubsub.googleapis.com \
     workflows.googleapis.com \
