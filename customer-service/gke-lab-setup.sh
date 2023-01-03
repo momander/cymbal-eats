@@ -103,4 +103,3 @@ gcloud beta run jobs create db-job \
     --region $REGION
 
 gcloud beta run jobs execute db-job --region $REGION
-
