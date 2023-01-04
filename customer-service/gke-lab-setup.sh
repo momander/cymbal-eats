@@ -34,6 +34,8 @@ gcloud services enable \
     compute.googleapis.com \
     --quiet
 
+gcloud container clusters create-auto rewards-cluster --region us-central1 --async
+
 gcloud projects add-iam-policy-binding $PROJECT_NAME \
   --member="serviceAccount:$PROJECT_NUMBER-compute@developer.gserviceaccount.com" \
   --role="roles/alloydb.client"
