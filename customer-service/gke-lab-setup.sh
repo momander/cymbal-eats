@@ -38,6 +38,19 @@ gcloud container clusters create-auto rewards-cluster --region us-central1 --asy
 
 gcloud projects add-iam-policy-binding $PROJECT_NAME \
   --member="serviceAccount:$PROJECT_NUMBER-compute@developer.gserviceaccount.com" \
+  --role="roles/storage.objectViewer"
+
+gcloud projects add-iam-policy-binding ${PROJECT_ID} \
+--member="serviceAccount:${PROJECT_NUMBER}-compute@developer.gserviceaccount.com" \
+--role='roles/logging.logWriter'
+
+gcloud projects add-iam-policy-binding ${PROJECT_ID} \
+--member="serviceAccount:${PROJECT_NUMBER}-compute@developer.gserviceaccount.com" \
+--role='roles/monitoring.metricWriter'
+
+
+gcloud projects add-iam-policy-binding $PROJECT_NAME \
+  --member="serviceAccount:$PROJECT_NUMBER-compute@developer.gserviceaccount.com" \
   --role="roles/alloydb.client"
 
 gcloud compute addresses create google-managed-services-default \
@@ -59,24 +72,24 @@ CLUSTER=customer-cluster
 INSTANCE=customer-instance
 
 ALLOYDB_REGION=us-central1
-gcloud beta alloydb clusters create $CLUSTER \
+gcloud alloydb clusters create $CLUSTER \
     --password=$DB_PASSWORD \
     --network=default \
     --region=$ALLOYDB_REGION \
     --project=$PROJECT_NAME
 
-gcloud beta alloydb clusters describe $CLUSTER --region=$ALLOYDB_REGION
+gcloud alloydb clusters describe $CLUSTER --region=$ALLOYDB_REGION
 
-gcloud beta alloydb instances create $INSTANCE \
+gcloud alloydb instances create $INSTANCE \
     --cluster=$CLUSTER \
     --region=$ALLOYDB_REGION \
     --instance-type=PRIMARY \
     --cpu-count=2 \
     --project=$PROJECT_NAME
 
-gcloud beta alloydb instances describe $INSTANCE --cluster=$CLUSTER --region $ALLOYDB_REGION
+gcloud alloydb instances describe $INSTANCE --cluster=$CLUSTER --region $ALLOYDB_REGION
 
-export DB_HOST=$(gcloud beta alloydb instances describe $INSTANCE \
+export DB_HOST=$(gcloud alloydb instances describe $INSTANCE \
     --cluster=$CLUSTER \
     --region=$ALLOYDB_REGION \
     --format=json | jq \
